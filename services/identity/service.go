@@ -33,7 +33,9 @@ func (s *identityService) CreateUser(profile model.Profile, password string) (mo
 	defer insertUserStmt.Close()
 
 	primaryKey, _ := uuid.NewUUID()
-	user := model.User{}
+	user := model.User{
+		id: primaryKey.String(),
+	}
 
 	insertUserStmt.Exec()
 

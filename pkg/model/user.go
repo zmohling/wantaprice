@@ -4,8 +4,8 @@ import "time"
 
 // User ...
 type User struct {
-	id              string
-	created         time.Time
-	lastLogin       time.Time
-	passwordChanged time.Time
+	ID              string
+	Created         time.Time
+	LastLogin       time.Time
+	PasswordChanged time.Time
 }

@@ -2,8 +2,8 @@ package model
 
 // Profile ...
 type Profile struct {
-	login       string
-	firstName   string
-	lastName    string
-	displayName string
+	Login       string
+	FirstName   string
+	LastName    string
+	DisplayName string
 }

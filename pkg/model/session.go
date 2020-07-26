@@ -4,8 +4,8 @@ import "time"
 
 // Session ...
 type Session struct {
-	id        string
-	login     string
-	userID    string
-	expiresAt time.Time
+	ID        string
+	Login     string
+	UserID    string
+	ExpiresAt time.Time
 }
