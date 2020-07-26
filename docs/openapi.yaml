@@ -1,0 +1,370 @@
+openapi: 3.0.0
+info:
+  title: WantAPrice API
+  version: '1.0'
+  description: REST API documentation of endpoints
+servers:
+  - url: 'https://api.wantaprice.com/v1/'
+    variables: {}
+tags:
+  - name: Users
+  - name: Sessions
+paths:
+  /users:
+    post:
+      tags:
+        - Users
+      summary: Create a new user
+      description: ''
+      operationId: createUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                profile:
+                  $ref: '#/components/schemas/Profile'
+                password:
+                  type: string
+                  format: password
+              required:
+                - profile
+                - password
+            examples:
+              CreateUserWithPassword:
+                description: Create a user with password
+                value:
+                  profile:
+                    displayName: "Alice Foo"
+                    login: "alice@example.com"
+                    mobilePhone: "555-555-5555"
+                  password: "alicepw"
+      responses:
+        '201':
+          description: Created User
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                CreateUserWithPassword:
+                  value:
+                    userId: "00ub0oNGTSWTBKOLGLNR"
+                    created: "2013-07-02T21:36:25.344Z"
+                    lastLogin: "2013-07-02T21:36:25.344Z"
+                    passwordChanged: "2013-07-02T21:36:25.344Z"
+                    profile:
+                      displayName: "Alice Foo"
+                      login: "alice@example.com"
+                      mobilePhone: "555-555-5555"
+                    
+  '/users/{userId}':
+    parameters:
+      - in: path
+        description: ID of interested user
+        name: userId
+        schema:
+          type: string
+        required: true
+    get:
+      summary: Get user by ID
+      tags:
+        - Users
+      operationId: getUserById
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+#        '401':
+#          $ref: '#/components/responses/UnauthorizedError'
+
+#    put:
+#      summary: Update user values
+#      description: ''
+#      operationId: updateUserById
+#      security:
+#        - BearerAuth: []
+#      responses:
+#        '200':
+#          $ref: '#/components/responses/Succeeded'
+#        '401':
+#          $ref: '#/components/responses/UnauthorizedError'
+#      tags:
+#        - Users
+  # '/users/{userId}/lifecycle/activate':
+  #   parameters:
+  #     - in: path
+  #       description: ID of interested user
+  #       name: userId
+  #       schema:
+  #         type: string
+  #       required: true
+  #   post:
+  #     tags:
+  #       - Users
+  #     parameters:
+  #       - in: header
+  #         name: sendEmail
+  #         schema:
+  #           type: boolean
+  #           default: true
+  #     summary: Activate a user
+  #     description: "This is often the next step after creating a new user. Default behavior sends an email with embedded activation URL."
+  #     operationId: activateUser
+  #     responses:
+  #       '204':
+  #         description: Activation token generated
+  /sessions:
+    post:
+      tags:
+        - Sessions
+      summary: Primary authenication
+      description: ""
+      operationId: primaryAuth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                login:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+              required: 
+                - login
+                - password
+            examples: 
+              AuthWithPassword:
+                value:
+                  login: "alice@example.com"
+                  password: "alicepw"
+      responses:
+        "200":
+          description: Sucessful authentication
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+              description: Session cookie 
+        "401":
+          description: Unauthorized
+  '/sessions/me':
+    parameters:
+      - in: path
+        description: ID of interested session
+        name: sessionId
+        schema:
+          type: string
+        required: true
+    delete:
+      tags:
+        - Sessions
+      summary: Delete current session (logout)
+      description: "Closes a user's session (logout)."
+      operationId: closeSession
+      responses:
+        "204":
+          description: Session closed
+        "404":
+          description: Session not found   
+  '/sessions/me/lifecycle/refresh':
+    post:
+      tags:
+        - Sessions
+      summary: Refresh your existing session
+      description: "The response will contain the refreshed Session with an updated expiresAt timestamp for the user if the id was valid."
+      operationId: refreshSession
+      responses:
+        "200":
+          description: Sucessful authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Session'
+        "404":
+          description: Session not found   
+components:
+  schemas:
+    Alert:
+      type: object
+      properties:
+        product:
+          $ref: '#/components/schemas/Product'
+        price:
+          $ref: '#/components/schemas/Price'
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "5057271217946"
+        name: 
+          type: string
+          example: "A1 Original Sauce 142g"
+        category:
+          type: string
+          example: "Food Items"
+        manufacturer:
+          type: string
+          example: "A1"
+        image:
+          type: string
+          format: uri
+          example: "https://images.barcodelookup.com/13237/132372316-1.jpg"
+    Offer:
+      type: object
+      properties:
+        product:
+          $ref: '#/components/schemas/Product'
+        price: 
+          $ref: '#/components/schemas/Price'
+        merchant:
+          $ref: '#/components/schemas/Merchant'
+    Merchant:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+    Price:
+      type: object
+      properties:
+        value: 
+          type: string
+        currency:
+          type: string
+    User:
+      type: object
+      externalDocs:
+        description: Status flow diagram
+        url: "https://developer.okta.com/img/okta-user-status.png"
+      properties:
+        userId:
+          type: string
+          description: unique key for user
+          example: "00ub0oNGTSWTBKOLGLNR"
+        created:
+          type: string
+          description: timestamp when user was created
+          format: date-time
+        lastLogin:
+          type: string
+          format: date-time
+        passwordChanged:
+          type: string
+          format: date-time
+
+        profile:
+          $ref: '#/components/schemas/Profile'
+    Profile:
+      type: object
+      externalDocs:
+        url: "https://tools.ietf.org/html/draft-ietf-scim-core-schema-22#section-4.1.1"
+        description: "The default user profile is based on the System for Cross-Domain Identity Management: Core Schema"
+      properties:
+        login:
+          title: Username
+          type: string
+          minLength: 5
+          maxLength: 100
+          example: alice@example.com
+        firstName:
+          type: string
+          example: Alice
+        lastName:
+          type: string
+          example: Foo
+        displayName:
+          type: string
+          example: Alice Foo
+        # streetAddress:
+        #   type: string
+        #   example: "7764 Cottage Street"
+        # city:
+        #   type: string
+        #   example: "Indianapolis"
+        # state:
+        #   type: string
+        #   example: "IN"
+        # zip:
+        #   type: string
+        #   example: "46201"
+        # countryCode:
+        #   type: string
+        #   example: "US"
+        # preferredLanguage:
+        #   type: string
+        #   example: "en-US"
+    Session:
+      type: object
+      properties:
+        sessionId:
+          type: string
+          description: unique key for the session
+          example: "101W_juydrDRByB7fUdRyE2JQ"
+        login:
+          type: string
+          format: email
+          example: alice@example.com
+        userId:
+          type: string
+          description: unique key for the user
+        expiresAt:
+          type: string
+          format: date-time
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
+      required:
+        - code
+        - message
+  responses:
+    Succeeded:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiResponse'
+    Created:
+      description: Created
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiResponse'
+      headers:
+        Location:
+          schema:
+            type: string
+            format: uri
+          description: Location of created resource
+    UnauthorizedError:
+      description: Authentication information is missing or invalid
+      headers:
+        WWW_Authenticate:
+          schema:
+            type: string
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
