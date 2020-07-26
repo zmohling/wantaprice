@@ -15,11 +15,8 @@
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.1",
     "react-scripts": "3.4.1",
-<<<<<<< HEAD
     "redux-thunk": "^2.3.0",
-=======
     "typeface-roboto": "0.0.75",
->>>>>>> 10b683e5ed2e1f91b545fe3d477512956e6ce884
     "typescript": "^3.7.5"
   },
   "scripts": {
