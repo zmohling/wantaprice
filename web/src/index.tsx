@@ -1,12 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import Register from './components/pages/register';
 import * as serviceWorker from './serviceWorker';
+
+//set font for app
+require('typeface-roboto');
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Register/>
   </React.StrictMode>,
   document.getElementById('root')
 );
