@@ -1,1 +1,6 @@
+github.com/google/uuid v1.1.1 h1:Gkbcsh/GbpXz7lPftLA3P6TYMwjCLYm83jiFQZF/3gY=
+github.com/google/uuid v1.1.1/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
 github.com/zmohling/wantaprice v0.0.0-20200726224935-ad5b80c0c38f h1:FcU2IqqczV+/roc1NRkhuN726o1PRGP7+4IaJz/p5zc=
+github.com/zmohling/wantaprice v0.0.0-20200726233651-07d2f6269328 h1:0C7u4OZ1LlkmLj33OBZhhHyKF4c4HSJ5OmGcFML3csU=
+github.com/zmohling/wantaprice/pkg/model v0.0.0-20200726233651-07d2f6269328 h1:1xEBHFELU5oOAN1U7ns5LyuB0NuwldxXNYvgq1KINco=
+github.com/zmohling/wantaprice/pkg/model v0.0.0-20200726233651-07d2f6269328/go.mod h1:iPeuCo/pEKK5j6d/UJMODrKUEGTjtwDNK3ZMK1T0mrg=
