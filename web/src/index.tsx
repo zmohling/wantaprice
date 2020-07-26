@@ -6,6 +6,9 @@ import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import store from './store/store';
 
+//set font for app
+require('typeface-roboto');
+
 ReactDOM.render(
   <Provider store = {store}>
     <App />
