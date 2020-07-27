@@ -11,4 +11,6 @@ type User struct {
 	Created         time.Time
 	LastLogin       time.Time
 	PasswordChanged time.Time
+	salt            string
+	password        string
 }

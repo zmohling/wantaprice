@@ -12,14 +12,14 @@ import (
 
 // IdentityService ...
 type IdentityService interface {
-	CreateUser(profile model.Profile, password string) (model.User, error)
+	CreateUser(user model.User, password string) (model.User, error)
 }
 
 type identityService struct {
 	db sql.DB
 }
 
-func (s *identityService) CreateUser(profile model.Profile, password string) (model.User, error) {
+func (s *identityService) CreateUser(user model.User, password string) (model.User, error) {
 	tx, err := s.db.Begin()
 
 	if err != nil {
@@ -34,11 +34,9 @@ func (s *identityService) CreateUser(profile model.Profile, password string) (mo
 	defer insertUserStmt.Close()
 
 	pk, _ := uuid.NewUUID()
-	user := model.User{
-		ID:              pk.String(),
-		Created:         time.Now(),
-		PasswordChanged: time.Now(),
-	}
+	user.ID = pk.String()
+	user.Created = time.Now()
+	user.PasswordChanged = time.Now()
 
 	insertUserStmt.Exec(user.ID, user.Created, user.LastLogin, user.PasswordChanged)
 
@@ -47,6 +45,8 @@ func (s *identityService) CreateUser(profile model.Profile, password string) (mo
 		log.Fatal(err)
 	}
 	defer insertProfile.Close()
+
+	insertProfile.Exec(profile.L)
 
 	err = tx.Commit()
 	if err != nil {
