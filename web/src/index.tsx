@@ -1,13 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core';
+import { blueGrey } from '@material-ui/core/colors/';
+import Route from './components/route';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import store from './store/store';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core';
-import { blueGrey } from '@material-ui/core/colors/';
-import Header from './components/header';
-import Dashboard from './components/pages/dashboard';
-import Register from './components/pages/register';
+import { CookiesProvider } from 'react-cookie';
 
 //set font for app
 require('typeface-roboto');
@@ -28,11 +27,13 @@ const customTheme = createMuiTheme({
 });
 
 ReactDOM.render(
-  <Provider store = {store}>
-    <MuiThemeProvider theme={customTheme}>
-      <Register/>
-    </MuiThemeProvider>
-  </Provider>,
+  <CookiesProvider>
+    <Provider store = {store}>
+      <MuiThemeProvider theme={customTheme}>
+        <Route />
+      </MuiThemeProvider>
+    </Provider>
+  </CookiesProvider>,
   document.getElementById('root')
 );
 

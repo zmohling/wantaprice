@@ -24,42 +24,40 @@ paths:
             schema:
               type: object
               properties:
-                profile:
-                  $ref: '#/components/schemas/Profile'
+                login:
+                  type: string
+                  format: email
                 password:
                   type: string
                   format: password
+                displayName:
+                  type: string
+                phone:
+                  type: string
               required:
-                - profile
+                - login
                 - password
+                - displayName
             examples:
               CreateUserWithPassword:
                 description: Create a user with password
                 value:
-                  profile:
-                    displayName: "Alice Foo"
-                    login: "alice@example.com"
-                    mobilePhone: "555-555-5555"
+                  login: "alice@example.com"
                   password: "alicepw"
+                  displayName: "Alice Foo"
+                  phone: "1112223333"
       responses:
         '201':
           description: Created User
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-              examples:
-                CreateUserWithPassword:
-                  value:
-                    userId: "00ub0oNGTSWTBKOLGLNR"
-                    created: "2013-07-02T21:36:25.344Z"
-                    lastLogin: "2013-07-02T21:36:25.344Z"
-                    passwordChanged: "2013-07-02T21:36:25.344Z"
-                    profile:
-                      displayName: "Alice Foo"
-                      login: "alice@example.com"
-                      mobilePhone: "555-555-5555"
-                    
+                type: object
+                properties:
+                  id: 
+                    type: string
+                    example: "38fd4d9d-cfc5-11ea-b07c-f6bb43e5ef99"
+                    description: User ID
   '/users/{userId}':
     parameters:
       - in: path
@@ -80,45 +78,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
-#        '401':
-#          $ref: '#/components/responses/UnauthorizedError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
 
-#    put:
-#      summary: Update user values
-#      description: ''
-#      operationId: updateUserById
-#      security:
-#        - BearerAuth: []
-#      responses:
-#        '200':
-#          $ref: '#/components/responses/Succeeded'
-#        '401':
-#          $ref: '#/components/responses/UnauthorizedError'
-#      tags:
-#        - Users
-  # '/users/{userId}/lifecycle/activate':
-  #   parameters:
-  #     - in: path
-  #       description: ID of interested user
-  #       name: userId
-  #       schema:
-  #         type: string
-  #       required: true
-  #   post:
-  #     tags:
-  #       - Users
-  #     parameters:
-  #       - in: header
-  #         name: sendEmail
-  #         schema:
-  #           type: boolean
-  #           default: true
-  #     summary: Activate a user
-  #     description: "This is often the next step after creating a new user. Default behavior sends an email with embedded activation URL."
-  #     operationId: activateUser
-  #     responses:
-  #       '204':
-  #         description: Activation token generated
   /sessions:
     post:
       tags:
@@ -249,10 +211,23 @@ components:
         description: Status flow diagram
         url: "https://developer.okta.com/img/okta-user-status.png"
       properties:
-        userId:
+        id:
           type: string
           description: unique key for user
           example: "00ub0oNGTSWTBKOLGLNR"
+        login:
+          title: Username
+          type: string
+          minLength: 5
+          maxLength: 100
+          example: alice@example.com
+          format: email
+        displayName:
+          type: string
+          example: Alice Foo
+        phone:
+          type: string
+          example: "1112223333"
         created:
           type: string
           description: timestamp when user was created
@@ -263,52 +238,10 @@ components:
         passwordChanged:
           type: string
           format: date-time
-
-        profile:
-          $ref: '#/components/schemas/Profile'
-    Profile:
-      type: object
-      externalDocs:
-        url: "https://tools.ietf.org/html/draft-ietf-scim-core-schema-22#section-4.1.1"
-        description: "The default user profile is based on the System for Cross-Domain Identity Management: Core Schema"
-      properties:
-        login:
-          title: Username
-          type: string
-          minLength: 5
-          maxLength: 100
-          example: alice@example.com
-        firstName:
-          type: string
-          example: Alice
-        lastName:
-          type: string
-          example: Foo
-        displayName:
-          type: string
-          example: Alice Foo
-        # streetAddress:
-        #   type: string
-        #   example: "7764 Cottage Street"
-        # city:
-        #   type: string
-        #   example: "Indianapolis"
-        # state:
-        #   type: string
-        #   example: "IN"
-        # zip:
-        #   type: string
-        #   example: "46201"
-        # countryCode:
-        #   type: string
-        #   example: "US"
-        # preferredLanguage:
-        #   type: string
-        #   example: "en-US"
     Session:
       type: object
       properties:
-        sessionId:
+        id:
           type: string
           description: unique key for the session
           example: "101W_juydrDRByB7fUdRyE2JQ"

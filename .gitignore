@@ -5,6 +5,11 @@
 *.so
 *.dylib
 
+db/
+
+# Helm
+*dev.yaml
+
 # Test binary, built with `go test -c`
 *.test
 
@@ -130,3 +135,5 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+*.DS_Store
