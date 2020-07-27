@@ -67,6 +67,8 @@ paths:
           type: string
         required: true
     get:
+      security:
+       - cookieAuth: []
       summary: Get user by ID
       tags:
         - Users
@@ -120,14 +122,9 @@ paths:
         "401":
           description: Unauthorized
   '/sessions/me':
-    parameters:
-      - in: path
-        description: ID of interested session
-        name: sessionId
-        schema:
-          type: string
-        required: true
     delete:
+      security:
+       - cookieAuth: []
       tags:
         - Sessions
       summary: Delete current session (logout)
@@ -140,6 +137,8 @@ paths:
           description: Session not found   
   '/sessions/me/lifecycle/refresh':
     post:
+      security:
+       - cookieAuth: []
       tags:
         - Sessions
       summary: Refresh your existing session
@@ -294,10 +293,7 @@ components:
           schema:
             type: string
   securitySchemes:
-    BasicAuth:
-      type: http
-      scheme: basic
-    BearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: _sak
