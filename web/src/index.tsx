@@ -1,18 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 // import './index.css';
-import App from './App';
+import Route from './components/route';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import store from './store/store';
+import { CookiesProvider } from 'react-cookie';
 
 //set font for app
 require('typeface-roboto');
 
 ReactDOM.render(
-  <Provider store = {store}>
-    <App />
-  </Provider>,
+  <CookiesProvider>
+    <Provider store = {store}>
+      <Route />
+    </Provider>
+  </CookiesProvider>,
   document.getElementById('root')
 );
 
