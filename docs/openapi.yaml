@@ -24,8 +24,8 @@ paths:
             schema:
               type: object
               properties:
-                profile:
-                  $ref: '#/components/schemas/Profile'
+                user:
+                  $ref: '#/components/schemas/User'
                 password:
                   type: string
                   format: password
@@ -36,10 +36,10 @@ paths:
               CreateUserWithPassword:
                 description: Create a user with password
                 value:
-                  profile:
+                  user:
                     displayName: "Alice Foo"
                     login: "alice@example.com"
-                    mobilePhone: "555-555-5555"
+                    phone: "555-555-5555"
                   password: "alicepw"
       responses:
         '201':
@@ -51,15 +51,14 @@ paths:
               examples:
                 CreateUserWithPassword:
                   value:
-                    userId: "00ub0oNGTSWTBKOLGLNR"
-                    created: "2013-07-02T21:36:25.344Z"
-                    lastLogin: "2013-07-02T21:36:25.344Z"
-                    passwordChanged: "2013-07-02T21:36:25.344Z"
-                    profile:
-                      displayName: "Alice Foo"
+                    user:
+                      id: "00ub0oNGTSWTBKOLGLNR"
                       login: "alice@example.com"
-                      mobilePhone: "555-555-5555"
-                    
+                      displayName: "Alice Foo"
+                      phone: "1112223333"
+                      created: "2013-07-02T21:36:25.344Z"
+                      lastLogin: "2013-07-02T21:36:25.344Z"
+                      passwordChanged: "2013-07-02T21:36:25.344Z"
   '/users/{userId}':
     parameters:
       - in: path
@@ -249,10 +248,29 @@ components:
         description: Status flow diagram
         url: "https://developer.okta.com/img/okta-user-status.png"
       properties:
-        userId:
+        id:
           type: string
           description: unique key for user
           example: "00ub0oNGTSWTBKOLGLNR"
+        login:
+          title: Username
+          type: string
+          minLength: 5
+          maxLength: 100
+          example: alice@example.com
+          format: email
+        # firstName:
+        #   type: string
+        #   example: Alice
+        # lastName:
+        #   type: string
+        #   example: Foo
+        displayName:
+          type: string
+          example: Alice Foo
+        phone:
+          type: string
+          example: "1112223333"
         created:
           type: string
           description: timestamp when user was created
@@ -263,52 +281,10 @@ components:
         passwordChanged:
           type: string
           format: date-time
-
-        profile:
-          $ref: '#/components/schemas/Profile'
-    Profile:
-      type: object
-      externalDocs:
-        url: "https://tools.ietf.org/html/draft-ietf-scim-core-schema-22#section-4.1.1"
-        description: "The default user profile is based on the System for Cross-Domain Identity Management: Core Schema"
-      properties:
-        login:
-          title: Username
-          type: string
-          minLength: 5
-          maxLength: 100
-          example: alice@example.com
-        firstName:
-          type: string
-          example: Alice
-        lastName:
-          type: string
-          example: Foo
-        displayName:
-          type: string
-          example: Alice Foo
-        # streetAddress:
-        #   type: string
-        #   example: "7764 Cottage Street"
-        # city:
-        #   type: string
-        #   example: "Indianapolis"
-        # state:
-        #   type: string
-        #   example: "IN"
-        # zip:
-        #   type: string
-        #   example: "46201"
-        # countryCode:
-        #   type: string
-        #   example: "US"
-        # preferredLanguage:
-        #   type: string
-        #   example: "en-US"
     Session:
       type: object
       properties:
-        sessionId:
+        id:
           type: string
           description: unique key for the session
           example: "101W_juydrDRByB7fUdRyE2JQ"

@@ -4,3 +4,5 @@ github.com/zmohling/wantaprice v0.0.0-20200726224935-ad5b80c0c38f h1:FcU2IqqczV+
 github.com/zmohling/wantaprice v0.0.0-20200726233651-07d2f6269328 h1:0C7u4OZ1LlkmLj33OBZhhHyKF4c4HSJ5OmGcFML3csU=
 github.com/zmohling/wantaprice/pkg/model v0.0.0-20200726233651-07d2f6269328 h1:1xEBHFELU5oOAN1U7ns5LyuB0NuwldxXNYvgq1KINco=
 github.com/zmohling/wantaprice/pkg/model v0.0.0-20200726233651-07d2f6269328/go.mod h1:iPeuCo/pEKK5j6d/UJMODrKUEGTjtwDNK3ZMK1T0mrg=
+github.com/zmohling/wantaprice/pkg/model v0.0.0-20200726235650-c850a51e5d60 h1:SAC1LgI/H5m+0gFqwMRsvRWu1HW+AOyx9Mq2fcEj2wo=
+github.com/zmohling/wantaprice/pkg/model v0.0.0-20200726235650-c850a51e5d60/go.mod h1:iPeuCo/pEKK5j6d/UJMODrKUEGTjtwDNK3ZMK1T0mrg=
