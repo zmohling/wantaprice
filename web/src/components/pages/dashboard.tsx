@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState }from 'react';
 import { 
   Container,
   Grid,
@@ -47,6 +47,20 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const Dashboard = (props: any) => {
   const styles = useStyles();
+  const [searchValue, setSearchValue] = useState('');
+
+  const handleSearchBar = (e: any) => {
+    if(e.key === 'Enter'){
+      search();
+    }else{
+      setSearchValue(e.target.value);
+    }
+
+  }
+
+  const search = () => {
+    console.log(searchValue);
+  }
 
   let content = (
     <div className={styles.root}>
@@ -63,7 +77,7 @@ const Dashboard = (props: any) => {
                 },
                 startAdornment: (
                   <InputAdornment position="start">
-                    <IconButton size="medium">
+                    <IconButton size="medium" onClick={search}>
                       <SearchIcon fontSize="large"/>
                     </IconButton>
                   </InputAdornment>
@@ -74,6 +88,7 @@ const Dashboard = (props: any) => {
               name="search"
               fullWidth
               variant="outlined"
+              onKeyUp={handleSearchBar}
             />
           </Grid>
           
