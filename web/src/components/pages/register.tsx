@@ -59,24 +59,22 @@ const Register = (props: any) => {
 
     const url = 'https://api.wantaprice.com/v1/users';
     const body = {
-      "profile":{
-        "displayName": name,
-        "login": email,
-        "mobilePhone": phone
-      },
+      "displayName": name,
+      "login": email,
+      "phone": phone,
       "password": password
     };
-    console.log(body);
 
     const res = await fetch(url, {
       method: 'POST',
+      mode: 'no-cors',
       headers: {
         'Content-Type':'application/json',
       },
       body: JSON.stringify(body)
     });
 
-    console.log( await res.json());
+    console.log(res);
     
   }
 
