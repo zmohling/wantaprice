@@ -1,18 +1,39 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import './index.css';
-import App from './App';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core';
+import { blueGrey } from '@material-ui/core/colors/';
+import Route from './components/route';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import store from './store/store';
+import { CookiesProvider } from 'react-cookie';
 
 //set font for app
 require('typeface-roboto');
 
+const customTheme = createMuiTheme({
+  palette: {
+    primary: {
+      main: blueGrey[700],
+      light: '#718792',
+      dark: '#1c313a'
+    },
+    secondary: {
+      main: blueGrey[100],
+      light: '#ffffff',
+      dark: '#9ea7aa'
+    }
+  }
+});
+
 ReactDOM.render(
-  <Provider store = {store}>
-    <App />
-  </Provider>,
+  <CookiesProvider>
+    <Provider store = {store}>
+      <MuiThemeProvider theme={customTheme}>
+        <Route />
+      </MuiThemeProvider>
+    </Provider>
+  </CookiesProvider>,
   document.getElementById('root')
 );
 
