@@ -1,16 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import Register from './components/pages/register';
+// import './index.css';
+import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { Provider } from 'react-redux';
+import store from './store/store';
 
 //set font for app
 require('typeface-roboto');
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Register/>
-  </React.StrictMode>,
+  <Provider store = {store}>
+    <App />
+  </Provider>,
   document.getElementById('root')
 );
 
