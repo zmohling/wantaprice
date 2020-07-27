@@ -29,14 +29,11 @@ func main() {
 	var db *sql.DB
 	{
 		db = getDBConnection(logger)
-		//db.SetLogger(gormLogWrapper{l: logger})
 	}
 	defer db.Close()
 
-	rep, _ := sql.Open("postgres", os.Getenv("DB_CONN"))
-
 	var (
-		service = NewService(rep)
+		service = NewService(db)
 	)
 
 	mux := http.NewServeMux()
@@ -102,7 +99,7 @@ func getDBConnection(logger log.Logger) *sql.DB {
 		os.Exit(-1)
 	}
 
-	db, err := sql.Open("mysql", connStr)
+	db, err := sql.Open("postgres", connStr)
 	if err != nil {
 		level.Error(logger).Log("exit", err)
 		panic("Failed to connect DB")

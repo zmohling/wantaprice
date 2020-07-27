@@ -1,0 +1,36 @@
+apiVersion: skaffold/v2beta5
+kind: Config
+metadata:
+  name: wantaprice
+build:
+  artifacts:
+    - image: registry.digitalocean.com/castify/identityservice
+      context: services/identityservice
+  local:
+    push: false
+    concurrency: 0
+deploy:
+  helm:
+    releases:
+      - name: wantaprice
+        chartPath: deployments/wantaprice
+        skipBuildDependencies: true
+        wait: true
+        setValues:
+          host: localhost
+        valuesFiles:
+          - deployments/wantaprice/values.dev.yaml
+        artifactOverrides:
+          identityservice.image: registry.digitalocean.com/castify/identityservice
+      - name: wantaprice-infrastructure
+        chartPath: deployments/wantaprice-infrastructure
+        skipBuildDependencies: false
+profiles:
+  - name: prod
+    patches:
+      - op: replace
+        path: /build/local/push
+        value: true
+      - op: replace
+        path: /deploy/helm/releases/0/setValues/host
+        value: "api.wantaprice.com"

@@ -9,9 +9,9 @@ import (
 	kitlog "github.com/go-kit/kit/log"
 	"github.com/go-kit/kit/transport"
 	kithttp "github.com/go-kit/kit/transport/http"
+	"github.com/zmohling/wantaprice/pkg/model"
 
 	"github.com/gorilla/mux"
-	"github.com/zmohling/wantaprice/pkg/model"
 )
 
 // MakeHandler returns a handler for the booking service.
@@ -21,7 +21,7 @@ func MakeHandler(s IdentityService, logger kitlog.Logger) http.Handler {
 		kithttp.ServerErrorEncoder(encodeError),
 	}
 
-	bookCargoHandler := kithttp.NewServer(
+	createUserHandler := kithttp.NewServer(
 		makeCreateUserEndpoint(s),
 		decodeCreateUserRequest,
 		encodeResponse,
@@ -30,7 +30,7 @@ func MakeHandler(s IdentityService, logger kitlog.Logger) http.Handler {
 
 	r := mux.NewRouter()
 
-	r.Handle("/v1/users", bookCargoHandler).Methods("POST")
+	r.Handle("/v1/users", createUserHandler).Methods("POST")
 
 	return r
 }
@@ -39,8 +39,10 @@ var errBadRoute = errors.New("bad route")
 
 func decodeCreateUserRequest(_ context.Context, r *http.Request) (interface{}, error) {
 	var body struct {
-		User     model.User `json:"user"`
-		Password string     `json:"password"`
+		Login       string `json:"login"`
+		Password    string `json:"password"`
+		DisplayName string `json:"displayName"`
+		Phone       string `json:"phone"`
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
@@ -48,7 +50,7 @@ func decodeCreateUserRequest(_ context.Context, r *http.Request) (interface{}, e
 	}
 
 	return createUserRequest{
-		User:     body.User,
+		User:     model.User{Login: body.Login, DisplayName: body.DisplayName, Phone: body.Phone},
 		Password: body.Password,
 	}, nil
 }

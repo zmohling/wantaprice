@@ -4,13 +4,12 @@ import "time"
 
 // User ...
 type User struct {
-	ID              string
-	Login           string
-	DisplayName     string
-	Phone           string
-	Created         time.Time
-	LastLogin       time.Time
-	PasswordChanged time.Time
-	Salt            string
-	Password        string
+	ID              string    `json:"id"`
+	Login           string    `json:"login"`
+	DisplayName     string    `json:"displayName"`
+	Phone           string    `json:"phone,omitempty"`
+	Created         time.Time `json:"created"`
+	LastLogin       time.Time `json:"-"`
+	PasswordChanged time.Time `json:"-"`
+	Password        string    `json:"-"`
 }

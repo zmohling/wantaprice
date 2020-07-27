@@ -1,4 +1,4 @@
-module github.com/zmohling/wantaprice/services/identity
+module github.com/zmohling/wantaprice/services/identityservice
 
 go 1.14
 

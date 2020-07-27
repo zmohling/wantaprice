@@ -1,0 +1,13 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: wantaprice-ingress
+spec:
+  rules:
+  - host: {{ .Values.host }}
+    http:
+      paths:
+      - path: /v1/users
+        backend:
+          serviceName: {{ .Values.identityservice.name }}
+          servicePort: 50051

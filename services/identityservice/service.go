@@ -39,7 +39,7 @@ func (s *identityService) CreateUser(user model.User, password string) (id strin
 	}
 	defer tx.Rollback()
 
-	insertUserStmt, err := tx.Prepare("INSERT INTO `users` VALUES (1, 2, 3, 4)")
+	insertUserStmt, err := tx.Prepare("INSERT INTO users VALUES ($1, $2, $3, $4, $5, $6, $7, $8)")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -51,7 +51,10 @@ func (s *identityService) CreateUser(user model.User, password string) (id strin
 	user.PasswordChanged = time.Now()
 	user.Password, _ = hashPassword(password)
 
-	insertUserStmt.Exec(user.ID, user.Login, user.DisplayName, user.Phone, user.Created, user.LastLogin, user.PasswordChanged, user.Password)
+	_, err = insertUserStmt.Exec(user.ID, user.Login, user.DisplayName, user.Phone, user.Created, user.LastLogin, user.PasswordChanged, user.Password)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	err = tx.Commit()
 	if err != nil {
