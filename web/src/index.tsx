@@ -1,17 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import './index.css';
-import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import store from './store/store';
+import Header from './components/header';
+import Dashboard from './components/pages/dashboard';
 
 //set font for app
 require('typeface-roboto');
 
 ReactDOM.render(
   <Provider store = {store}>
-    <App />
+    <Header/>
+    <Dashboard/>
   </Provider>,
   document.getElementById('root')
 );
