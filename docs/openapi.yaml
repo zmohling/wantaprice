@@ -24,19 +24,28 @@ paths:
             schema:
               type: object
               properties:
-                user:
-                  $ref: '#/components/schemas/User'
+                login:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+                displayName:
+                  type: string
+                phone:
+                  type: string
               required:
-                - user
+                - login
+                - password
+                - displayName
             examples:
               CreateUserWithPassword:
                 description: Create a user with password
                 value:
-                  user:
-                    login: "alice@example.com"
-                    password: "alicepw"
-                    displayName: "Alice Foo"
-                    phone: "1112223333"
+                  login: "alice@example.com"
+                  password: "alicepw"
+                  displayName: "Alice Foo"
+                  phone: "1112223333"
       responses:
         '201':
           description: Created User
