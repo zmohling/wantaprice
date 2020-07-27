@@ -65,17 +65,20 @@ const Register = (props: any) => {
       "password": password
     };
 
-    const res = await fetch(url, {
+    await fetch(url, {
       method: 'POST',
-      mode: 'no-cors',
       headers: {
         'Content-Type':'application/json',
+        'Accept':'*/*',
+        'Accept-Encoding':'gzip, deflate, br',
+        'Connection':'keep-alive',
+        'Cache-Control':'no-cache',
+        'Content-Length':'<calculated when request is sent>',
+        'Host':'<calculated when request is sent>'
       },
       body: JSON.stringify(body)
-    });
-
-    console.log(res);
-    
+    }).then(response => response.json())
+    .then(data => console.log(data));
   }
 
   let content = (
