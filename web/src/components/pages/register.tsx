@@ -29,9 +29,19 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const Register = (props: any) => {
   const styles = useStyles();
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+
+  const handleName = (e: any) => {
+    setName(e.target.value);
+  };
+
+  const handlePhone = (e: any) => {
+    setPhone(e.target.value);
+  };
 
   const handleEmail = (e: any) => {
     setEmail(e.target.value);
@@ -45,6 +55,31 @@ const Register = (props: any) => {
     setConfirmPassword(e.target.any);
   };
 
+  async function createUser(){
+
+    const url = 'https://api.wantaprice.com/v1/users';
+    const body = {
+      "profile":{
+        "displayName": name,
+        "login": email,
+        "mobilePhone": phone
+      },
+      "password": password
+    };
+    console.log(body);
+
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type':'application/json',
+      },
+      body: JSON.stringify(body)
+    });
+
+    console.log( await res.json());
+    
+  }
+
   let content = (
     <Container component="main" maxWidth="xs">
     <CssBaseline />
@@ -54,8 +89,19 @@ const Register = (props: any) => {
         </Typography>
         <form onSubmit={(e:any) => {
           e.preventDefault();
-          console.log("email: " + email + ", password: " + password + ", confirmPassword: " + confirmPassword);
+          createUser();
         }}>
+          <TextField
+            margin="normal"
+            variant="outlined"
+            required
+            fullWidth
+            id="name"
+            label="Name"
+            name="name"
+            onChange={handleName}
+            autoFocus
+          />
           <TextField
             margin="normal"
             variant="outlined"
@@ -66,7 +112,18 @@ const Register = (props: any) => {
             name="email"
             autoComplete="email"
             onChange={handleEmail}
-            autoFocus
+          />
+          <TextField
+            margin="normal"
+            variant="outlined"
+            required
+            fullWidth
+            id="phone"
+            label="Phone Number "
+            name="phone"
+            autoComplete="phone"
+            helperText="We use this to send you notifications!"
+            onChange={handlePhone}
           />
           <TextField
             margin="normal"
@@ -77,11 +134,9 @@ const Register = (props: any) => {
             label="Password"
             type="password"
             id="password"
-
             onChange={handlePassword}
           />
           <TextField
-            margin="normal"
             variant="outlined"
             required
             fullWidth
